@@ -11,7 +11,7 @@ O objetivo do projeto é fixar os conceitos das aulas de Acesso a banco de dados
 - `Departament`
 - `Seller`
 
-### ***DAO (Interface):*****
+### ***DAO (Interface):***
 
 - `DepartamentDao`
 - `SellerDao`
