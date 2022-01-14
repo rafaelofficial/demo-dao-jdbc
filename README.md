@@ -16,3 +16,5 @@ O objetivo do projeto é fixar os conceitos das aulas de Acesso a banco de dados
 - `DepartamentDao`
 - `SellerDao`
 - `DaoFactory`
+
+#### Em desenvolvimento...
