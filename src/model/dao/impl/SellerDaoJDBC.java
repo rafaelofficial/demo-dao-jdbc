@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -99,5 +102,52 @@ public class SellerDaoJDBC implements SellerDao {
 	public List<Seller> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Seller> findByDepartment(Department department) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			// iniciar o prepareStatement / fazer uma consulta SQL
+			st = conn.prepareStatement(
+					"SELECT seller.*,department.Name as DepName " 
+					+ "FROM seller INNER JOIN department " 
+					+ "ON seller.DepartmentId = department.Id "
+					+ "WHERE DepartmentId = ? "
+					+ "ORDER BY Name");
+			
+			// configurar o ? da busca no banco de dados
+			st.setInt(1, department.getId());
+			rs = st.executeQuery();
+			
+			List<Seller> list = new ArrayList<>();
+			Map<Integer, Department> map = new HashMap<>();
+			
+			
+			// testar se veio um resultado (rs.next)
+			while (rs.next()) {
+				
+				Department dep = map.get(rs.getInt("DepartmentId"));
+				
+				// testar se um department existe ou não existe
+				if (dep == null) {
+					dep = instantiateDepartment(rs);
+					map.put(rs.getInt("DepartmentId"), dep);
+				}
+				
+				// instanciar o objeto e setar os dados
+				Seller obj = instantiateSeller(rs, dep);
+				list.add(obj);
+			}
+			return list;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			// fechar os recursos
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 }
