@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -64,6 +67,7 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			throw new DbException(e.getMessage());
 		} finally {
 			DB.closeStatement(st);
+			DB.closeResultSet(rs);
 		}
 	}
 	
@@ -89,8 +93,38 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
 	@Override
 	public List<Department> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			// preparar a consulta sql
+			st = conn.prepareStatement("SELECT * FROM department");
+
+			// executa query
+			rs = st.executeQuery();
+			
+			// instanciar lista de departamentos
+			List<Department> list = new ArrayList<>();
+			Map<Integer, Department> map = new HashMap<>();
+			
+			// testar se veio um resultado (rs.next)
+			while (rs.next()) {
+				Department dep = map.get(rs.getInt("Id"));
+				
+				if (dep == null) {
+					dep = instantiateDepartment(rs);
+					map.put(rs.getInt("Id"), dep);
+				}
+				list.add(dep);		
+			}
+			return list;
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
 	}
 
 }

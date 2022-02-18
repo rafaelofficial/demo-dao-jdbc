@@ -1,5 +1,7 @@
 package application;
 
+import java.util.List;
+
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
 import model.entities.Department;
@@ -14,6 +16,11 @@ public class Program2 {
 		Department dep = departmentDao.findById(1);
 		System.out.println(dep);
 		
+		System.out.println("=== TEST 2: findByIdAll =======");
+		List<Department> list = departmentDao.findAll();
+		for (Department department : list) {
+			System.out.println(department);
+		}
 	}
 
 }
