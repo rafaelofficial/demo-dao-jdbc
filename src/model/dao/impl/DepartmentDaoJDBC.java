@@ -70,18 +70,6 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 			DB.closeResultSet(rs);
 		}
 	}
-	
-	// instaciar objeto Seller
-		private Seller instantiateSeller(ResultSet rs, Department dep) throws SQLException {
-			Seller obj = new Seller();
-			obj.setId(rs.getInt("Id"));
-			obj.setName(rs.getString("Name"));
-			obj.setEmail(rs.getString("Email"));
-			obj.setBirthDate(rs.getDate("BirthDate"));
-			obj.setBaseSalary(rs.getDouble("BaseSalary"));
-			obj.setDepartment(dep);
-			return obj;
-		}
 
 		// instanciar objeto Department
 		private Department instantiateDepartment(ResultSet rs) throws SQLException {
