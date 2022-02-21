@@ -22,9 +22,17 @@ public class Program2 {
 			System.out.println(department);
 		}
 		
+		/**
 		System.out.println("\n=== TEST 3: insert =======");
 		Department newDepartment = new Department(null, "Department2");
 		departmentDao.insert(newDepartment);
 		System.out.println("Inserted! New id = " + newDepartment.getId());
+		*/
+		
+		System.out.println("\n=== TEST 4: update =======");
+		dep = departmentDao.findById(5);
+		dep.setName("Logistics");
+		departmentDao.update(dep);
+		System.out.println("Update completed!");
 	}
 }
